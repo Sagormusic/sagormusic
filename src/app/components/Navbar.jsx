@@ -1,11 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // ---------- Content (edit here only) ----------
 const BRAND = "Sagor Music";
+
+// Logo file placed inside the /public folder (change the name here if needed)
+const LOGO_SRC = "/logo.jpeg";
 
 // All site pages (shown on desktop top bar and in the mobile menu)
 const PAGES = [
@@ -72,6 +76,23 @@ function Icon({ name, className = "h-6 w-6" }) {
   );
 }
 
+// Round logo that links to Home
+function Logo({ size = 40, onClick }) {
+  return (
+    <Link href="/" onClick={onClick} aria-label={BRAND} className="shrink-0">
+      <Image
+        src={LOGO_SRC}
+        alt={BRAND}
+        width={size}
+        height={size}
+        priority
+        className="rounded-full object-cover"
+        style={{ width: size, height: size }}
+      />
+    </Link>
+  );
+}
+
 // Shared glass style (blur + translucent dark + thin light border)
 const GLASS = "bg-black/40 backdrop-blur-xl backdrop-saturate-150";
 
@@ -98,10 +119,7 @@ export default function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-50 hidden h-16 items-center justify-between border-b border-white/10 px-8 md:flex ${GLASS}`}
       >
-        <Link href="/" className="text-lg font-bold tracking-wide">
-          <span className="text-red-500">{BRAND.split(" ")[0]}</span>{" "}
-          {BRAND.split(" ").slice(1).join(" ")}
-        </Link>
+        <Logo size={40} />
 
         <nav className="flex items-center gap-1">
           {PAGES.map((p) => (
@@ -124,14 +142,7 @@ export default function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between border-b border-white/10 px-4 md:hidden ${GLASS}`}
       >
-        <Link
-          href="/"
-          onClick={() => setOpen(false)}
-          className="text-base font-bold tracking-wide"
-        >
-          <span className="text-red-500">{BRAND.split(" ")[0]}</span>{" "}
-          {BRAND.split(" ").slice(1).join(" ")}
-        </Link>
+        <Logo size={36} onClick={() => setOpen(false)} />
 
         <button
           type="button"
@@ -144,55 +155,61 @@ export default function Navbar() {
         </button>
       </header>
 
-      {/* ===== Mobile: dropdown menu (pages + options) ===== */}
-      {open && (
-        <>
-          {/* Click outside to close */}
-          <div
-            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+      {/* ===== Mobile: dropdown menu (pages + options), always mounted so it can animate ===== */}
+      {/* Click-outside overlay (fades in/out) */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 md:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        aria-hidden={!open}
+        className={`fixed inset-x-3 top-16 z-50 max-h-[75vh] origin-top-right overflow-y-auto rounded-2xl border border-white/10 p-3 shadow-2xl transition-all duration-300 ease-out md:hidden ${GLASS} bg-black/60 ${
+          open
+            ? "visible translate-y-0 scale-100 opacity-100"
+            : "pointer-events-none invisible -translate-y-3 scale-95 opacity-0"
+        }`}
+      >
+        <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-widest text-white/40">
+          Pages
+        </p>
+        {PAGES.map((p) => (
+          <Link
+            key={p.href}
+            href={p.href}
             onClick={() => setOpen(false)}
-          />
-          <div
-            className={`fixed inset-x-3 top-16 z-50 max-h-[75vh] overflow-y-auto rounded-2xl border border-white/10 p-3 shadow-2xl md:hidden ${GLASS} bg-black/60`}
+            tabIndex={open ? 0 : -1}
+            className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
+              isActive(p.href)
+                ? "bg-red-600/90 text-white"
+                : "text-white/80 hover:bg-white/10"
+            }`}
           >
-            <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-widest text-white/40">
-              Pages
-            </p>
-            {PAGES.map((p) => (
-              <Link
-                key={p.href}
-                href={p.href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
-                  isActive(p.href)
-                    ? "bg-red-600/90 text-white"
-                    : "text-white/80 hover:bg-white/10"
-                }`}
-              >
-                <Icon name={p.icon} className="h-5 w-5" />
-                {p.label}
-              </Link>
-            ))}
+            <Icon name={p.icon} className="h-5 w-5" />
+            {p.label}
+          </Link>
+        ))}
 
-            <p className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-white/40">
-              Options
-            </p>
-            {OPTIONS.map((o) => (
-              <a
-                key={o.href}
-                href={o.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-white/80 transition hover:bg-white/10"
-              >
-                {o.label}
-                <Icon name="external" className="h-4 w-4 text-white/50" />
-              </a>
-            ))}
-          </div>
-        </>
-      )}
+        <p className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+          Options
+        </p>
+        {OPTIONS.map((o) => (
+          <a
+            key={o.href}
+            href={o.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            tabIndex={open ? 0 : -1}
+            className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-white/80 transition hover:bg-white/10"
+          >
+            {o.label}
+            <Icon name="external" className="h-4 w-4 text-white/50" />
+          </a>
+        ))}
+      </div>
 
       {/* ===== Mobile: bottom tab bar ===== */}
       <nav
