@@ -12,12 +12,12 @@ const SITE = {
   // Contact (WhatsApp number in local format, link is built below)
   whatsapp: "01828627226",
   email: "sagormusiccompany2@gmail.com",
-  phone: "",
+  phone: "01828627226",
   messenger: "https://m.me/rafiulislamsagorbd", // full Messenger link, e.g. https://m.me/username
 
   // Payment numbers (Bangladesh)
-  bkash: "",
-  nagad: "",
+  bkash: "01828627226",
+  nagad: "01828627226",
 
   // Social links
   social: {
