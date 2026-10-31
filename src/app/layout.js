@@ -1,6 +1,7 @@
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/common/ScrollToTop";
 import "./globals.css";
 
 // Heading font (applied to h1-h6 in globals.css)
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         <Navbar></Navbar>
         {children}
         <Footer></Footer>
+        <ScrollToTop></ScrollToTop>
       </body>
     </html>
   );
