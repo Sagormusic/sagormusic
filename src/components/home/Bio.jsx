@@ -19,11 +19,65 @@ const FACTS = [
 // Photo placed inside the /public folder. Leave "" to hide the photo.
 const PHOTO_SRC = "/sagor1.jpg";
 
+// ---------- Official brand logos (inline SVG, white glyphs) ----------
+function YouTubeLogo() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-5 w-5 shrink-0 sm:h-6 sm:w-6">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  );
+}
+
+function FacebookLogo() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-5 w-5 shrink-0 sm:h-6 sm:w-6">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  );
+}
+
+function InstagramLogo() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+      className="h-5 w-5 shrink-0 sm:h-6 sm:w-6"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 // Buttons (links come from the shared site data; empty links are hidden)
+// `wide` = full row on mobile (YouTube), Facebook + Instagram sit side by side below it
 const BUTTONS = [
-  { label: "YouTube Channel", href: SITE.social.youtubeRafiul },
-  { label: "Instagram", href: SITE.social.instagram },
-  { label: "Facebook", href: SITE.social.facebook },
+  {
+    label: "YouTube Channel",
+    href: SITE.social.youtubeRafiul,
+    Logo: YouTubeLogo,
+    wide: true,
+    style: "bg-[#FF0000] hover:bg-[#e60000]",
+  },
+  {
+    label: "Facebook",
+    href: SITE.social.facebook,
+    Logo: FacebookLogo,
+    wide: false,
+    style: "bg-[#1877F2] hover:bg-[#1468d6]",
+  },
+  {
+    label: "Instagram",
+    href: SITE.social.instagram,
+    Logo: InstagramLogo,
+    wide: false,
+    style:
+      "bg-[linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)] hover:brightness-110",
+  },
 ].filter((b) => b.href);
 
 export default function Bio() {
@@ -88,22 +142,22 @@ export default function Bio() {
             ))}
           </dl>
 
-          {/* Buttons */}
+          {/* Social buttons: mobile = YouTube full row, Facebook + Instagram side by side */}
           {BUTTONS.length > 0 && (
-            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
-              {BUTTONS.map((b, i) => (
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:justify-center md:justify-start">
+              {BUTTONS.map(({ label, href, Logo, wide, style }) => (
                 <a
-                  key={b.label}
-                  href={b.href}
+                  key={label}
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`rounded-full px-7 py-3 text-center text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-                    i === 0
-                      ? "bg-red-600 text-white hover:bg-red-500"
-                      : "border border-white/25 text-white hover:bg-white/10"
-                  }`}
+                  aria-label={label}
+                  className={`flex min-w-0 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:px-7 ${
+                    wide ? "col-span-2 sm:col-auto" : ""
+                  } ${style}`}
                 >
-                  {b.label}
+                  <Logo />
+                  <span className="truncate">{label}</span>
                 </a>
               ))}
             </div>
