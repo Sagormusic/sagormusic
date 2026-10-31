@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SITE from "../../data/site";
+import SITE from "@/data/site";
 
 // ---------- Content (edit here only) ----------
 const TITLE = "Sagor Music Cassette Company";
