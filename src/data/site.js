@@ -13,7 +13,7 @@ const SITE = {
   whatsapp: "01828627226",
   email: "sagormusiccompany2@gmail.com",
   phone: "",
-  messenger: "", // full Messenger link, e.g. https://m.me/username
+  messenger: "https://m.me/rafiulislamsagorbd", // full Messenger link, e.g. https://m.me/username
 
   // Payment numbers (Bangladesh)
   bkash: "",
