@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+/* Fonts: Inter for body text, Cormorant Garamond for headings (loaded in layout.js) */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-cormorant);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), serif;
+  }
+}
