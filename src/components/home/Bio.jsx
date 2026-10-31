@@ -16,7 +16,7 @@ const PARAGRAPHS = [
 // Quick facts (label + value)
 const FACTS = [
   { label: "Born", value: "March 4, 2004" },
-  { label: "Birthplace", value: "Dhaka, Bangladesh" },
+  { label: "Birthplace", value: "Tarabo, rupgonj, Narayanganj" },
 ];
 
 // Photo placed inside the /public folder. Leave "" to hide the photo.
