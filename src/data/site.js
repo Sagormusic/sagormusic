@@ -23,7 +23,7 @@ const SITE = {
   social: {
     youtubeLabel: "https://youtube.com/@sagormusiccassettecompany",
     youtubeRafiul: "https://www.youtube.com/@RafiulislamBGM",
-    facebook: "",
+    facebook: "https://www.facebook.com/rafiulislamsagorbd",
     instagram:
       "https://www.instagram.com/officialrafiulislam?cplk=MXJmemZoZXkwcWE5bQ==",
     spotify: "",

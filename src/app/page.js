@@ -1,4 +1,4 @@
-import Bio from "@/components/Bio";
+import Bio from "@/components/home/Bio";
 import Hero from "@/components/home/Hero";
 
 export default function Home() {

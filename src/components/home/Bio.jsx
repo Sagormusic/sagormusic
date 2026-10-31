@@ -17,12 +17,13 @@ const FACTS = [
 ];
 
 // Photo placed inside the /public folder. Leave "" to hide the photo.
-const PHOTO_SRC = "";
+const PHOTO_SRC = "/sagor1.jpg";
 
 // Buttons (links come from the shared site data; empty links are hidden)
 const BUTTONS = [
   { label: "YouTube Channel", href: SITE.social.youtubeRafiul },
   { label: "Instagram", href: SITE.social.instagram },
+  { label: "Facebook", href: SITE.social.facebook },
 ].filter((b) => b.href);
 
 export default function Bio() {
