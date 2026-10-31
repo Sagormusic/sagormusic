@@ -1,5 +1,6 @@
 import About from "@/components/home/About";
 import Bio from "@/components/home/Bio";
+import Channels from "@/components/home/Channels";
 import Hero from "@/components/home/Hero";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero></Hero>
       <Bio></Bio>
       <About></About>
+      <Channels></Channels>
     </main>
   );
 }
