@@ -20,12 +20,6 @@ const VIDEO_IDS = [
   "456M6tH3VIA",
   "HDcIo9OirCc",
   "DvxuGSedGFI",
-  "cmwJkRAvzj8",
-  "ZIZ-BuVNBEE",
-  "LlqXCC4D8lY",
-  "72tZ5CN3GkQ",
-  "l81PIHt3PF0",
-  "27bVa37XEAw",
 ];
 
 // One video card: thumbnail first, the real player loads only after a tap
@@ -147,7 +141,7 @@ export default function RafiulChannel() {
               />
             ))}
           </div>
-          <h1 className="text-4xl font-bold sm:text-5xl lg:text-6xl">{TITLE}</h1>
+          <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl">{TITLE}</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/70 sm:text-base">
             {SUBTITLE}
           </p>
