@@ -4,57 +4,192 @@ import { useEffect, useRef, useState } from "react";
 import SITE, { whatsappLink } from "@/data/site";
 
 // ---------- Content (edit here) ----------
-const LABEL = "Contact";
-const TITLE = "Get in touch";
-const TEXT =
-  "Questions, orders or music collaborations? Tap any button below and the chat opens right away.";
+const TITLE = "Contact details";
+const TEXT = "Open any option, or copy the detail and reach out your own way.";
 
 // Local number -> international format for tel: links (Bangladesh +880)
 const phoneHref = SITE.phone
   ? `tel:+880${SITE.phone.replace(/^0/, "")}`
   : "";
 
-// Items with an empty link are hidden automatically
-const ITEMS = [
+// ---------- Icons (official WhatsApp and Messenger logos, same as the Order section) ----------
+function WhatsAppIcon({ className = "h-6 w-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true" className={className}>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
+
+function MessengerIcon({ className = "h-6 w-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true" className={className}>
+      <path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.974 12-11.111C24 4.974 18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z" />
+    </svg>
+  );
+}
+
+function MailIcon({ className = "h-6 w-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <rect x="2" y="4" width="20" height="16" rx="3" />
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className = "h-6 w-6" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function Stroke({ className, children }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  );
+}
+
+function CopyIcon({ className }) {
+  return (
+    <Stroke className={className}>
+      <rect x="9" y="9" width="13" height="13" rx="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </Stroke>
+  );
+}
+
+function CheckIcon({ className }) {
+  return (
+    <Stroke className={className}>
+      <path d="M20 6 9 17l-5-5" />
+    </Stroke>
+  );
+}
+
+function OpenIcon({ className }) {
+  return (
+    <Stroke className={className}>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+    </Stroke>
+  );
+}
+
+// ---------- Helpers ----------
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
+// On a computer mailto: often opens nothing, so open Gmail instead. On a phone use the mail app.
+function isMobile() {
+  return (
+    typeof navigator !== "undefined" &&
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+  );
+}
+
+function gmailCompose() {
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    SITE.email
+  )}`;
+}
+
+// ---------- Rows (items with an empty value in site.js are hidden) ----------
+const ROWS = [
   {
-    id: "whatsapp",
+    key: "whatsapp",
     label: "WhatsApp",
-    detail: SITE.whatsapp,
+    value: SITE.whatsapp,
+    copy: SITE.whatsapp,
     href: whatsappLink,
+    openLabel: "Open WhatsApp",
+    Logo: WhatsAppIcon,
+    OpenButtonIcon: OpenIcon,
+    circle: "bg-white",
     external: true,
-    color: "#25D366",
   },
   {
-    id: "messenger",
+    key: "messenger",
     label: "Messenger",
-    detail: "Chat with us",
+    value: (SITE.messenger || "").replace(/^https?:\/\//, ""),
+    copy: SITE.messenger,
     href: SITE.messenger,
+    openLabel: "Open Messenger",
+    Logo: MessengerIcon,
+    OpenButtonIcon: OpenIcon,
+    circle: "bg-white",
     external: true,
-    color: "#0A84FF",
   },
   {
-    id: "email",
-    label: "Email",
-    detail: SITE.email,
-    href: SITE.email ? `mailto:${SITE.email}` : "",
-    external: false,
-    color: "#E11D2E",
-  },
-  {
-    id: "phone",
+    key: "phone",
     label: "Phone",
-    detail: SITE.phone,
+    value: SITE.phone,
+    copy: SITE.phone,
     href: phoneHref,
+    openLabel: "Call",
+    Logo: PhoneIcon,
+    OpenButtonIcon: PhoneIcon,
+    circle: "bg-red-600 text-white",
     external: false,
-    color: "#F59E0B",
   },
-].filter((item) => item.href);
+  {
+    key: "email",
+    label: "Email",
+    value: SITE.email,
+    copy: SITE.email,
+    href: SITE.email ? `mailto:${SITE.email}` : "",
+    openLabel: "Send email",
+    Logo: MailIcon,
+    OpenButtonIcon: OpenIcon,
+    circle: "bg-white text-black",
+    external: false,
+    isEmail: true,
+  },
+].filter((row) => row.value && row.href);
 
-// ---------- Scroll reveal (runs once when the element enters the screen) ----------
-function useReveal() {
+const iconBtn =
+  "inline-flex h-11 w-11 items-center justify-center rounded-xl transition active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E8C27A]";
+
+export default function Links() {
   const ref = useRef(null);
+  const timer = useRef(null);
   const [shown, setShown] = useState(false);
+  const [copiedKey, setCopiedKey] = useState(null);
+  const [announce, setAnnounce] = useState("");
 
+  // Reveal once, when the card scrolls into view
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -65,186 +200,118 @@ function useReveal() {
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  return [ref, shown];
-}
+  useEffect(() => () => clearTimeout(timer.current), []);
 
-// ---------- Icons ----------
-const PHONE_PATH =
-  "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z";
-const BUBBLE_PATH =
-  "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z";
+  if (ROWS.length === 0) return null;
 
-function Icon({ name }) {
-  const common = {
-    width: 26,
-    height: 26,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 2,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
-  };
-
-  if (name === "whatsapp") {
-    return (
-      <svg {...common}>
-        <path d={BUBBLE_PATH} />
-        <g transform="translate(7.6 7.6) scale(0.38)" strokeWidth="4">
-          <path d={PHONE_PATH} />
-        </g>
-      </svg>
-    );
+  async function handleCopy(row) {
+    const ok = await copyText(row.copy);
+    clearTimeout(timer.current);
+    if (ok) {
+      setCopiedKey(row.key);
+      setAnnounce(`${row.label} copied`);
+      timer.current = setTimeout(() => setCopiedKey(null), 1800);
+    } else {
+      setAnnounce("Could not copy automatically. Please select and copy it by hand.");
+    }
   }
-  if (name === "messenger") {
-    return (
-      <svg {...common}>
-        <path d={BUBBLE_PATH} />
-        <g transform="translate(8 7.6) scale(0.35)" strokeWidth="4">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-        </g>
-      </svg>
-    );
-  }
-  if (name === "email") {
-    return (
-      <svg {...common}>
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-        <polyline points="22,6 12,13 2,6" />
-      </svg>
-    );
-  }
-  return (
-    <svg {...common}>
-      <path d={PHONE_PATH} />
-    </svg>
-  );
-}
-
-export default function Links() {
-  const [ref, shown] = useReveal();
-
-  if (ITEMS.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden px-4 pb-8 pt-14 sm:pt-20">
-      <style>{`
-        @keyframes cl-ring {
-          0% { transform: scale(1); opacity: 0.55; }
-          100% { transform: scale(1.8); opacity: 0; }
-        }
-        @keyframes cl-sweep {
-          0% { transform: translateX(-20%); }
-          60%, 100% { transform: translateX(420%); }
-        }
-        @keyframes cl-nudge {
-          0%, 100% { transform: translateX(0); }
-          50% { transform: translateX(5px); }
-        }
-        @keyframes cl-glow {
-          0%, 100% { opacity: 0.55; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.15); }
-        }
-        .cl-ring { animation: cl-ring 2.4s ease-out infinite; }
-        .cl-sweep { animation: cl-sweep 6s ease-in-out infinite; }
-        .cl-nudge { animation: cl-nudge 1.6s ease-in-out infinite; }
-        .cl-glow { animation: cl-glow 6s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) {
-          .cl-ring, .cl-sweep, .cl-nudge, .cl-glow { animation: none !important; }
-          .cl-reveal { transition: none !important; }
-        }
-      `}</style>
-
-      {/* Soft red glow behind the title */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
-      >
-        <div className="cl-glow h-72 w-72 rounded-full bg-red-600/25 blur-3xl"></div>
-      </div>
-
-      <div ref={ref} className="relative mx-auto max-w-5xl">
-        {/* Header */}
+    <div
+      ref={ref}
+      className={`transition-all duration-700 motion-reduce:transition-none ${
+        shown ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
+    >
+      {/* Glass card */}
+      <div className="relative rounded-3xl border border-white/15 bg-white/[0.07] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.35)] ring-1 ring-inset ring-white/10 backdrop-blur-2xl sm:p-7">
         <div
-          className={`cl-reveal mx-auto max-w-2xl text-center transition-all duration-700 ${
-            shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-          }`}
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-red-500">
-            {LABEL}
-          </p>
-          <h1 className="mt-3 text-5xl font-semibold sm:text-6xl">{TITLE}</h1>
-          <div className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
-          <p className="mt-5 text-base leading-relaxed text-white/70 sm:text-lg">
-            {TEXT}
-          </p>
-        </div>
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-white/15 via-transparent to-transparent"
+        ></div>
 
-        {/* Contact cards */}
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {ITEMS.map((item, i) => (
-            <a
-              key={item.id}
-              href={item.href}
-              target={item.external ? "_blank" : undefined}
-              rel={item.external ? "noopener noreferrer" : undefined}
-              style={{ transitionDelay: `${150 + i * 120}ms` }}
-              className={`cl-reveal relative flex items-center gap-4 overflow-hidden rounded-bl-xl rounded-br-[2rem] rounded-tl-[2rem] rounded-tr-xl border border-white/10 bg-white/[0.04] p-5 transition-all duration-700 active:scale-[0.98] ${
-                shown ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-              }`}
-            >
-              {/* Light sweep (always on, no hover needed) */}
-              <span
-                aria-hidden="true"
-                className="cl-sweep pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                style={{ animationDelay: `${i * 0.9}s` }}
-              ></span>
+        <div className="relative">
+          <h2 className="text-2xl font-medium">{TITLE}</h2>
+          <p className="mt-1 text-sm text-white/60">{TEXT}</p>
 
-              {/* Icon with pulsing ring */}
-              <span
-                className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-white"
-                style={{ background: item.color }}
+          <div className="mt-5 space-y-3">
+            {ROWS.map((row, i) => (
+              <div
+                key={row.key}
+                style={{ transitionDelay: `${150 + i * 100}ms` }}
+                className={`flex flex-wrap items-center gap-x-3.5 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.05] p-3.5 transition-all duration-700 motion-reduce:transition-none sm:p-4 ${
+                  shown ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                }`}
               >
                 <span
-                  aria-hidden="true"
-                  className="cl-ring absolute inset-0 rounded-full"
-                  style={{ background: item.color, animationDelay: `${i * 0.5}s` }}
-                ></span>
-                <span className="relative">
-                  <Icon name={item.id}></Icon>
+                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${row.circle}`}
+                >
+                  <row.Logo className="h-6 w-6"></row.Logo>
                 </span>
-              </span>
 
-              <span className="relative min-w-0 flex-1">
-                <span className="block text-lg font-semibold">{item.label}</span>
-                <span className="mt-0.5 block break-all text-sm text-white/60">
-                  {item.detail}
-                </span>
-              </span>
+                <div className="min-w-0 flex-1 basis-40">
+                  <p className="text-xs text-white/55">{row.label}</p>
+                  <p className="break-all text-base font-medium sm:text-lg">
+                    {row.value}
+                  </p>
+                </div>
 
-              <svg
-                className="cl-nudge relative h-5 w-5 shrink-0 text-white/50"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          ))}
+                <div className="ml-auto flex shrink-0 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(row)}
+                    aria-label={`Copy ${row.label}`}
+                    title={copiedKey === row.key ? "Copied" : "Copy"}
+                    className={`${iconBtn} ${
+                      copiedKey === row.key
+                        ? "bg-[#E8C27A] text-black"
+                        : "bg-white/10 text-white"
+                    }`}
+                  >
+                    {copiedKey === row.key ? (
+                      <CheckIcon className="h-[18px] w-[18px]"></CheckIcon>
+                    ) : (
+                      <CopyIcon className="h-[18px] w-[18px]"></CopyIcon>
+                    )}
+                  </button>
+
+                  <a
+                    href={row.href}
+                    {...(row.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    onClick={
+                      row.isEmail
+                        ? (e) => {
+                            if (!isMobile()) {
+                              e.preventDefault();
+                              window.open(gmailCompose(), "_blank", "noopener,noreferrer");
+                            }
+                          }
+                        : undefined
+                    }
+                    aria-label={row.openLabel}
+                    title={row.openLabel}
+                    className={`${iconBtn} bg-[#E8C27A] text-black`}
+                  >
+                    <row.OpenButtonIcon className="h-[18px] w-[18px]"></row.OpenButtonIcon>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </section>
+
+      <p className="sr-only" aria-live="polite">
+        {announce}
+      </p>
+    </div>
   );
 }
