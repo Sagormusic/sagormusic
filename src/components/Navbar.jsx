@@ -15,13 +15,12 @@ const LOGO_SRC = "/logo.jpeg";
 const PAGES = [
   { label: "Home", href: "/", icon: "home" },
   { label: "Music", href: "/music", icon: "music" },
-  { label: "Artists", href: "/artists", icon: "artists" },
   { label: "Shop", href: "/shop", icon: "shop" },
   { label: "Contact", href: "/contact", icon: "contact" },
 ];
 
 // Pages shown in the mobile bottom bar (YouTube / Facebook style)
-const BOTTOM_TABS = ["/", "/music", "/artists", "/shop", "/contact"];
+const BOTTOM_TABS = ["/", "/music", "/shop", "/contact"];
 
 // Extra external options shown only inside the mobile menu
 const OPTIONS = [
