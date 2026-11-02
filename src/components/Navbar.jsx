@@ -14,11 +14,9 @@ const LOGO_SRC = "/logo.jpeg";
 // All site pages (shown on desktop top bar and in the mobile menu)
 const PAGES = [
   { label: "Home", href: "/", icon: "home" },
-  { label: "About", href: "/about", icon: "about" },
   { label: "Music", href: "/music", icon: "music" },
   { label: "Artists", href: "/artists", icon: "artists" },
   { label: "Shop", href: "/shop", icon: "shop" },
-  { label: "Services", href: "/services", icon: "services" },
   { label: "Contact", href: "/contact", icon: "contact" },
 ];
 
