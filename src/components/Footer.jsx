@@ -18,11 +18,9 @@ const DEV_GITHUB = "https://github.com/saiful-global";
 
 const PAGES = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/#about" },
   { label: "Music", href: "/music" },
-  { label: "Artists", href: "/artists" },
-  { label: "Shop", href: "/shop" },
-  { label: "Services", href: "/services" },
+  { label: "Shop", href: SITE.shopUrl, external: true },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -268,14 +266,26 @@ export default function Footer() {
             <h3 className={HEADING}>Pages</h3>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-1">
               {PAGES.map((p) => (
-                <li key={p.href}>
-                  <Link
-                    href={p.href}
-                    className="flex items-center gap-2 text-sm text-white/65"
-                  >
-                    <span className="h-1 w-1 rounded-full bg-red-500" />
-                    {p.label}
-                  </Link>
+                <li key={p.label}>
+                  {p.external ? (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm text-white/65"
+                    >
+                      <span className="h-1 w-1 rounded-full bg-red-500" />
+                      {p.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={p.href}
+                      className="flex items-center gap-2 text-sm text-white/65"
+                    >
+                      <span className="h-1 w-1 rounded-full bg-red-500" />
+                      {p.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

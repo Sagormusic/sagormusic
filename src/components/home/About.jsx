@@ -132,6 +132,7 @@ export default function About() {
 
   return (
     <section
+      id="about"
       ref={ref}
       className={`relative isolate overflow-hidden px-5 py-16 sm:px-8 md:py-24 lg:px-16 ${show ? "about-show" : ""}`}
     >
