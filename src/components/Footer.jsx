@@ -36,29 +36,69 @@ const line = {
 };
 
 const ICONS = {
+  // Social icons use official brand colors (they sit on a white circle).
   youtube: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
+    <svg viewBox="0 0 24 24" fill="#FF0000" className="h-6 w-6">
       <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" />
     </svg>
   ),
   facebook: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
+    <svg viewBox="0 0 24 24" fill="#1877F2" className="h-6 w-6">
       <path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z" />
     </svg>
   ),
   instagram: (
-    <svg viewBox="0 0 24 24" {...line} className="h-[18px] w-[18px]">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+      <defs>
+        {/* Instagram brand gradient */}
+        <linearGradient
+          id="footer-ig-grad"
+          gradientUnits="userSpaceOnUse"
+          x1="3"
+          y1="21"
+          x2="21"
+          y2="3"
+        >
+          <stop offset="0" stopColor="#FEDA75" />
+          <stop offset="0.3" stopColor="#FA7E1E" />
+          <stop offset="0.55" stopColor="#D62976" />
+          <stop offset="0.8" stopColor="#962FBF" />
+          <stop offset="1" stopColor="#4F5BD5" />
+        </linearGradient>
+      </defs>
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+        stroke="url(#footer-ig-grad)"
+        strokeWidth="2"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="4"
+        stroke="url(#footer-ig-grad)"
+        strokeWidth="2"
+      />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="url(#footer-ig-grad)" />
     </svg>
   ),
   spotify: (
-    <svg viewBox="0 0 24 24" {...line} className="h-[18px] w-[18px]">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M7 9.5c3.5-1 7-.7 10 1" />
-      <path d="M7.5 12.5c3-.8 6-.5 8.5 1" />
-      <path d="M8 15.5c2.5-.6 5-.4 7 .8" />
+    <svg viewBox="0 0 24 24" className="h-6 w-6">
+      <circle cx="12" cy="12" r="12" fill="#1DB954" />
+      <g
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M5.8 8.6c4.2-1.2 8.6-.8 12.2 1.2" />
+        <path d="M6.6 12.2c3.5-.9 7-.5 10 1.2" />
+        <path d="M7.4 15.7c2.8-.7 5.5-.4 8 1" />
+      </g>
     </svg>
   ),
   github: (
@@ -84,10 +124,16 @@ const ICONS = {
   ),
 };
 
-// Items with an empty value are hidden automatically
+// Items with an empty value are hidden automatically.
+// "badge" = small number shown on the icon corner (used to tell the 2 YouTube channels apart).
 const SOCIAL = [
   { label: "YouTube (Label)", icon: "youtube", href: SITE.social.youtubeLabel },
-  { label: "YouTube (Rafiul Islam)", icon: "youtube", href: SITE.social.youtubeRafiul },
+  {
+    label: "YouTube (Rafiul Islam)",
+    icon: "youtube",
+    href: SITE.social.youtubeRafiul,
+    badge: "2",
+  },
   { label: "Facebook", icon: "facebook", href: SITE.social.facebook },
   { label: "Instagram", icon: "instagram", href: SITE.social.instagram },
   { label: "Spotify", icon: "spotify", href: SITE.social.spotify },
@@ -100,10 +146,27 @@ const CONTACT = [
   { label: "Phone", text: SITE.phone, href: SITE.phone && `tel:${SITE.phone}`, icon: "phone" },
 ].filter((c) => c.text && c.href);
 
+// Payment methods: logo link only, no numbers shown in the footer.
+// - href: where the logo links to (change here if you want another page).
+// - logo: optional path of the official logo image placed in `public/`
+//   (e.g. "/bkash.png"). While empty, a brand-colored wordmark is shown instead.
+// - Hidden automatically when the number in site.js is empty.
 const PAYMENTS = [
-  { label: "bKash", number: SITE.bkash },
-  { label: "Nagad", number: SITE.nagad },
-].filter((p) => p.number);
+  {
+    label: "bKash",
+    href: "https://www.bkash.com",
+    logo: "",
+    color: "#E2136E",
+    enabled: SITE.bkash,
+  },
+  {
+    label: "Nagad",
+    href: "https://nagad.com.bd",
+    logo: "",
+    color: "#F6921E",
+    enabled: SITE.nagad,
+  },
+].filter((p) => p.enabled);
 
 const HEADING =
   "mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-white";
@@ -119,7 +182,7 @@ export default function Footer() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Call to action bar */}
-        <div className="flex flex-col gap-5 border-b border-white/10 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-5 border-b border-white/10 py-8 sm:flex-row sm:items-center sm:justify-between sm:py-10">
           <div>
             <h2 className="text-2xl font-semibold sm:text-3xl">{CTA_TITLE}</h2>
             <p className="mt-1 text-sm text-white/60">{CTA_TEXT}</p>
@@ -146,7 +209,7 @@ export default function Footer() {
         </div>
 
         {/* Main columns */}
-        <div className="grid gap-10 py-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.3fr_1fr]">
+        <div className="grid gap-8 py-8 sm:grid-cols-2 sm:gap-10 sm:py-10 lg:grid-cols-[1.4fr_1fr_1.3fr_1fr]">
           {/* Brand */}
           <div>
             <Link href="/" className="inline-flex items-center gap-3">
@@ -164,16 +227,26 @@ export default function Footer() {
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
               {ABOUT_TEXT}
             </p>
-            <div className="mt-5 flex flex-wrap gap-2.5">
+            <div className="mt-5 flex flex-wrap gap-3">
               {SOCIAL.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
+                  title={s.label}
                   {...ext(s.href)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80"
+                  className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white"
                 >
                   {ICONS[s.icon]}
+                  {/* Small number badge on the corner */}
+                  {s.badge && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[9px] font-bold leading-none text-white ring-2 ring-neutral-950"
+                    >
+                      {s.badge}
+                    </span>
+                  )}
                 </a>
               ))}
             </div>
@@ -223,25 +296,39 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Payment */}
+          {/* Payment: official-style logo links only, no numbers */}
           {PAYMENTS.length > 0 && (
             <div>
               <h3 className={HEADING}>We Accept</h3>
-              <ul className="space-y-3">
+              <div className="flex flex-wrap gap-3">
                 {PAYMENTS.map((p) => (
-                  <li
+                  <a
                     key={p.label}
-                    className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
+                    href={p.href}
+                    aria-label={p.label}
+                    title={p.label}
+                    {...ext(p.href)}
+                    className="flex h-11 min-w-[5.5rem] items-center justify-center rounded-xl bg-white px-4"
                   >
-                    <span className="block text-sm font-semibold text-white">
-                      {p.label}
-                    </span>
-                    <span className="block text-sm text-white/60">
-                      {p.number}
-                    </span>
-                  </li>
+                    {p.logo ? (
+                      <Image
+                        src={p.logo}
+                        alt={p.label}
+                        width={80}
+                        height={28}
+                        className="h-6 w-auto object-contain"
+                      />
+                    ) : (
+                      <span
+                        className="text-base font-extrabold tracking-tight"
+                        style={{ color: p.color }}
+                      >
+                        {p.label}
+                      </span>
+                    )}
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
         </div>
@@ -258,8 +345,12 @@ export default function Footer() {
           Sagor Music
         </div>
 
-        {/* Bottom bar (small mobile padding only enough to clear the bottom tab bar) */}
-        <div className="flex flex-col items-center gap-4 border-t border-white/10 pb-[4.75rem] pt-5 text-xs text-white/40 md:flex-row md:justify-between md:pb-5">
+        {/* Bottom bar.
+            - Mobile: bottom padding = fixed tab bar (4rem) + device safe area + a small gap, so no extra empty space.
+            - Desktop (md+): extra right padding keeps the developer credit clear of the fixed
+              scroll-to-top button; it is removed on very wide screens where the button
+              already sits outside the content. */}
+        <div className="flex flex-col items-center gap-3 border-t border-white/10 pb-[calc(4.25rem_+_env(safe-area-inset-bottom))] pt-4 text-xs text-white/40 md:flex-row md:justify-between md:pb-5 md:pr-16 md:pt-5 min-[1400px]:pr-0">
           <p>
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
