@@ -11,16 +11,21 @@ const BRAND = "Sagor Music";
 // Logo file placed inside the /public folder (change the name here if needed)
 const LOGO_SRC = "/logo.jpeg";
 
+// Existing Fourthwall shop (the Shop menu item opens this in a new tab)
+const SHOP_URL =
+  "https://rafiulislam-shop.fourthwall.com/?utm_medium=product_shelf&utm_source=youtube";
+
 // All site pages (shown on desktop top bar and in the mobile menu)
+// `external: true` means the link opens in a new tab instead of an internal page
 const PAGES = [
   { label: "Home", href: "/", icon: "home" },
   { label: "Music", href: "/music", icon: "music" },
-  { label: "Shop", href: "/shop", icon: "shop" },
+  { label: "Shop", href: SHOP_URL, icon: "shop", external: true },
   { label: "Contact", href: "/contact", icon: "contact" },
 ];
 
-// Pages shown in the mobile bottom bar (YouTube / Facebook style)
-const BOTTOM_TABS = ["/", "/music", "/shop", "/contact"];
+// Pages shown in the mobile bottom bar (YouTube / Facebook style), by label
+const BOTTOM_TABS = ["Home", "Music", "Shop", "Contact"];
 
 // Extra external options shown only inside the mobile menu
 const OPTIONS = [
@@ -34,7 +39,7 @@ const OPTIONS = [
   },
   {
     label: "Order on Fourthwall",
-    href: "https://rafiulislam-shop.fourthwall.com/?utm_medium=product_shelf&utm_source=youtube",
+    href: SHOP_URL,
   },
 ];
 
@@ -73,6 +78,27 @@ function Icon({ name, className = "h-6 w-6" }) {
   );
 }
 
+// Internal page link (Next Link) or external link (new tab)
+function NavLink({ page, children, ...props }) {
+  if (page.external) {
+    return (
+      <a
+        href={page.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={page.href} {...props}>
+      {children}
+    </Link>
+  );
+}
+
 // Round logo that links to Home
 function Logo({ size = 40, onClick }) {
   return (
@@ -97,8 +123,13 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isActive = (href) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  // External links (Shop) are never "active"
+  const isActive = (page) => {
+    if (page.external) return false;
+    return page.href === "/"
+      ? pathname === "/"
+      : pathname.startsWith(page.href);
+  };
 
   // Close the mobile menu with the Escape key
   useEffect(() => {
@@ -108,7 +139,7 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const bottomTabs = PAGES.filter((p) => BOTTOM_TABS.includes(p.href));
+  const bottomTabs = PAGES.filter((p) => BOTTOM_TABS.includes(p.label));
 
   return (
     <>
@@ -120,17 +151,17 @@ export default function Navbar() {
 
         <nav className="flex items-center gap-1">
           {PAGES.map((p) => (
-            <Link
-              key={p.href}
-              href={p.href}
+            <NavLink
+              key={p.label}
+              page={p}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                isActive(p.href)
+                isActive(p)
                   ? "bg-red-600/90 text-white"
                   : "text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
               {p.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
       </header>
@@ -173,20 +204,26 @@ export default function Navbar() {
           Pages
         </p>
         {PAGES.map((p) => (
-          <Link
-            key={p.href}
-            href={p.href}
+          <NavLink
+            key={p.label}
+            page={p}
             onClick={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
             className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
-              isActive(p.href)
+              isActive(p)
                 ? "bg-red-600/90 text-white"
                 : "text-white/80 hover:bg-white/10"
             }`}
           >
             <Icon name={p.icon} className="h-5 w-5" />
             {p.label}
-          </Link>
+            {p.external && (
+              <Icon
+                name="external"
+                className="ml-auto h-4 w-4 text-white/50"
+              />
+            )}
+          </NavLink>
         ))}
 
         <p className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-white/40">
@@ -194,7 +231,7 @@ export default function Navbar() {
         </p>
         {OPTIONS.map((o) => (
           <a
-            key={o.href}
+            key={o.label}
             href={o.href}
             target="_blank"
             rel="noopener noreferrer"
@@ -213,17 +250,17 @@ export default function Navbar() {
         className={`fixed inset-x-0 bottom-0 z-50 flex h-16 items-stretch justify-around border-t border-white/10 pb-[env(safe-area-inset-bottom)] md:hidden ${GLASS}`}
       >
         {bottomTabs.map((p) => (
-          <Link
-            key={p.href}
-            href={p.href}
+          <NavLink
+            key={p.label}
+            page={p}
             onClick={() => setOpen(false)}
             className={`flex flex-1 flex-col items-center justify-center gap-1 text-[11px] font-medium transition ${
-              isActive(p.href) ? "text-red-500" : "text-white/60"
+              isActive(p) ? "text-red-500" : "text-white/60"
             }`}
           >
             <Icon name={p.icon} className="h-6 w-6" />
             {p.label}
-          </Link>
+          </NavLink>
         ))}
       </nav>
 
