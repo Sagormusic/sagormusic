@@ -157,7 +157,7 @@ export default function Navbar() {
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 isActive(p)
                   ? "bg-red-600/90 text-white"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                  : "text-white hover:bg-white/10 hover:text-white"
               }`}
             >
               {p.label}
@@ -177,7 +177,7 @@ export default function Navbar() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="rounded-full p-2 text-white/90 transition hover:bg-white/10"
+          className="rounded-full p-2 text-white transition hover:bg-white/10"
         >
           <Icon name={open ? "close" : "menu"} />
         </button>
@@ -200,7 +200,7 @@ export default function Navbar() {
             : "pointer-events-none invisible -translate-y-3 scale-95 opacity-0"
         }`}
       >
-        <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-widest text-white/40">
+        <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-widest text-white">
           Pages
         </p>
         {PAGES.map((p) => (
@@ -212,7 +212,7 @@ export default function Navbar() {
             className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
               isActive(p)
                 ? "bg-red-600/90 text-white"
-                : "text-white/80 hover:bg-white/10"
+                : "text-white hover:bg-white/10"
             }`}
           >
             <Icon name={p.icon} className="h-5 w-5" />
@@ -220,13 +220,13 @@ export default function Navbar() {
             {p.external && (
               <Icon
                 name="external"
-                className="ml-auto h-4 w-4 text-white/50"
+                className="ml-auto h-4 w-4 text-white"
               />
             )}
           </NavLink>
         ))}
 
-        <p className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+        <p className="px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-white">
           Options
         </p>
         {OPTIONS.map((o) => (
@@ -237,10 +237,10 @@ export default function Navbar() {
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
-            className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-white/80 transition hover:bg-white/10"
+            className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-white transition hover:bg-white/10"
           >
             {o.label}
-            <Icon name="external" className="h-4 w-4 text-white/50" />
+            <Icon name="external" className="h-4 w-4 text-white" />
           </a>
         ))}
       </div>
@@ -255,7 +255,7 @@ export default function Navbar() {
             page={p}
             onClick={() => setOpen(false)}
             className={`flex flex-1 flex-col items-center justify-center gap-1 text-[11px] font-medium transition ${
-              isActive(p) ? "text-red-500" : "text-white/60"
+              isActive(p) ? "text-red-500" : "text-white"
             }`}
           >
             <Icon name={p.icon} className="h-6 w-6" />
