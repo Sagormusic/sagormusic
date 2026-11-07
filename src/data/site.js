@@ -26,7 +26,9 @@ const SITE = {
     facebook: "https://www.facebook.com/rafiulislamsagorbd",
     instagram:
       "https://www.instagram.com/officialrafiulislam?cplk=MXJmemZoZXkwcWE5bQ==",
-    spotify: "",
+    spotify: "https://open.spotify.com/artist/4tkrUlehTC8ArzMDCkPxIF",
+    // Net TV News artist page
+    nettv: "https://nettv4u.com/celebrity/bengali/composer/rafiul-islam-sagor",
   },
 };
 
