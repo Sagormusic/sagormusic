@@ -3,6 +3,7 @@ import Intro from "@/components/contact/Intro";
 import Links from "@/components/contact/Links";
 import Form from "@/components/contact/Form";
 import Address from "@/components/contact/Address";
+import Portrait from "@/components/contact/Portrait";
 
 export const metadata = {
   title: "Contact | Sagor Music Cassette Company",
@@ -26,6 +27,11 @@ export default function Contact() {
         {/* Location map, full width under the two cards */}
         <div className="mt-6">
           <Address></Address>
+        </div>
+
+        {/* Portrait with phone number, last item above the footer */}
+        <div className="mt-6">
+          <Portrait></Portrait>
         </div>
       </div>
     </main>
